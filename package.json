@@ -1,0 +1,25 @@
+{
+  "name": "sns-localstack",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "create:sns": "ts-node src/sns.ts",
+    "create:sqs": "ts-node src/sqs.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-sns": "3.378.0",
+    "@aws-sdk/client-sqs": "3.378.0"
+  },
+  "devDependencies": {
+    "@lipex360-ui/eslint-config": "1.0.12",
+    "eslint": "8.45.0",
+    "ts-node": "10.9.1",
+    "typescript": "5.1.6"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@lipex360-ui/eslint-config"
+    ]
+  }
+}
