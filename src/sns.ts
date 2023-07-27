@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { SNS, PublishCommand } from '@aws-sdk/client-sns'
 
 export const sns = new SNS({
@@ -10,22 +11,29 @@ async function startup() {
 
   await sns.subscribe({
     Protocol: 'sqs',
-    TopicArn: 'arn:aws:sns:us-east-1:000000000000:my-sns',
+    TopicArn: process.env.SNS_TOPIC_ARN,
     Endpoint: 'arn:aws:sqs:us-east-1:000000000000:queue-sns-1',
   })
 
   await sns.subscribe({
     Protocol: 'sqs',
-    TopicArn: 'arn:aws:sns:us-east-1:000000000000:my-sns',
+    TopicArn: process.env.SNS_TOPIC_ARN,
     Endpoint: 'arn:aws:sqs:us-east-1:000000000000:queue-sns-2',
   })
 
-  const params = {
-    TopicArn: 'arn:aws:sns:us-east-1:000000000000:my-sns',
+  const command = new PublishCommand({
     Message: 'Teste SQS via SNS',
-  }
+    MessageAttributes: {
+      recipients: {
+        DataType: 'String.Array',
+        StringValue: JSON.stringify(['queue1', 'queue2']),
+      },
+      entityType: { DataType: 'String', StringValue: 'supplier' },
+      action: { DataType: 'String', StringValue: 'approved' },
+    },
+    TopicArn: process.env.SNS_TOPIC_ARN,
+  })
 
-  const command = new PublishCommand(params)
   const response = await sns.send(command)
 
   console.log({ response })
