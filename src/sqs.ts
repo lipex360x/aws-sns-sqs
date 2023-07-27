@@ -1,9 +1,4 @@
-import { SQS } from '@aws-sdk/client-sqs'
-
-export const sqs = new SQS({
-  region: 'us-east-1',
-  endpoint: 'http://127.0.0.1:4566',
-})
+import { sqs } from './config'
 
 async function startup() {
   await sqs.createQueue({
