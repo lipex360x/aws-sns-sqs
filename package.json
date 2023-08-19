@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "create:sns": "ts-node src/sns.ts",
-    "create:sqs": "ts-node src/sqs.ts"
+    "sns": "ts-node src/sns.ts",
+    "sqs": "ts-node src/sqs.ts"
   },
   "dependencies": {
     "@aws-sdk/client-sns": "3.378.0",

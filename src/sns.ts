@@ -2,6 +2,7 @@ import 'dotenv/config'
 import { PublishCommand } from '@aws-sdk/client-sns'
 
 import { sns } from './config'
+import supplier from './supplier'
 
 const config = {
   Protocol: 'sqs',
@@ -9,31 +10,23 @@ const config = {
 }
 
 async function startup() {
-  await sns.createTopic({ Name: 'my-sns' })
+  await sns.createTopic({ Name: 'SNS_ENTITIES_ARN' })
 
   await sns.subscribe({
     ...config,
     Attributes: {
-      FilterPolicy: JSON.stringify({ recipients: ['operations'] }),
+      FilterPolicy: JSON.stringify({ recipients: ['docusign'] }),
     },
-    Endpoint: 'arn:aws:sqs:us-east-1:000000000000:queue-sns-1',
+    Endpoint: 'arn:aws:sqs:us-east-1:000000000000:SQS_DOCUSIGN_ENTITIES',
   })
 
-  await sns.subscribe({
-    ...config,
-    Attributes: {
-      FilterPolicy: JSON.stringify({ recipients: ['teste'] }),
-    },
-    Endpoint: 'arn:aws:sqs:us-east-1:000000000000:queue-sns-2',
-  })
-
-  const message1 = {
-    Message: 'Teste SQS via SNS',
+  const message = {
+    Message: JSON.stringify(supplier),
 
     MessageAttributes: {
       recipients: {
         DataType: 'String.Array',
-        StringValue: JSON.stringify(['operations']),
+        StringValue: JSON.stringify(['docusign']),
       },
       entityType: { DataType: 'String', StringValue: 'supplier' },
       action: { DataType: 'String', StringValue: 'approved' },
@@ -41,20 +34,11 @@ async function startup() {
 
     TopicArn: process.env.SNS_TOPIC_ARN,
   }
-  // const message2 = {
-  //   ...message1,
-  //   recipients: {
-  //     DataType: 'String.Array',
-  //     StringValue: JSON.stringify(['teste']),
-  //   },
-  // }
 
-  const command1 = new PublishCommand(message1)
+  const command1 = new PublishCommand(message)
   await sns.send(command1)
-
-  // const command2 = new PublishCommand(message2)
-  // await sns.send(command2)
 
   console.log({ command1 })
 }
+
 startup()

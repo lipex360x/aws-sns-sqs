@@ -2,11 +2,10 @@ import { sqs } from './config'
 
 async function startup() {
   await sqs.createQueue({
-    QueueName: 'queue-sns-1',
-  })
-
-  await sqs.createQueue({
-    QueueName: 'queue-sns-2',
+    QueueName: 'SQS_DOCUSIGN_ENTITIES',
+    Attributes: {
+      VisibilityTimeout: '5',
+    },
   })
 
   console.log('queues created')
