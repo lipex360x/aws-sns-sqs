@@ -16,12 +16,18 @@ async function startup() {
     ...config,
     Attributes: {
       FilterPolicy: JSON.stringify({ recipients: ['docusign'] }),
+      FilterPolicyScope: 'MessageAttributes',
+      RawMessageDelivery: 'true',
     },
     Endpoint: 'arn:aws:sqs:us-east-1:000000000000:SQS_DOCUSIGN_ENTITIES',
   })
 
   const message = {
-    Message: JSON.stringify(supplier),
+    Message: JSON.stringify({
+      entityType: 'supplier',
+      action: 'approved',
+      payload: supplier,
+    }),
 
     MessageAttributes: {
       recipients: {
