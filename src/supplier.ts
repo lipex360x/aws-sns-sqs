@@ -15,8 +15,8 @@ export default {
     cnae: '123',
     corporateName: 'corp name',
     establishment: '1992-02-20T03:00:00.000Z',
-    governmentId: 'government_id',
-    id: 1,
+    governmentId: 'government_id50',
+    id: 75,
     tradingName: 'REPRESENTACOES',
   },
   address: {

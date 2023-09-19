@@ -15,11 +15,61 @@ async function startup() {
   await sns.subscribe({
     ...config,
     Attributes: {
-      FilterPolicy: JSON.stringify({ recipients: ['docusign'] }),
+      FilterPolicy: JSON.stringify({ recipients: ['supplier'] }),
       FilterPolicyScope: 'MessageAttributes',
       RawMessageDelivery: 'true',
     },
-    Endpoint: 'arn:aws:sqs:us-east-1:000000000000:SQS_DOCUSIGN_ENTITIES',
+    Endpoint: 'arn:aws:sqs:us-east-1:000000000000:SQS_1',
+  })
+
+  await sns.subscribe({
+    ...config,
+    Attributes: {
+      FilterPolicy: JSON.stringify({ recipients: ['supplier'] }),
+      FilterPolicyScope: 'MessageAttributes',
+      RawMessageDelivery: 'true',
+    },
+    Endpoint: 'arn:aws:sqs:us-east-1:000000000000:SQS_2',
+  })
+
+  await sns.subscribe({
+    ...config,
+    Attributes: {
+      FilterPolicy: JSON.stringify({ recipients: ['supplier'] }),
+      FilterPolicyScope: 'MessageAttributes',
+      RawMessageDelivery: 'true',
+    },
+    Endpoint: 'arn:aws:sqs:us-east-1:000000000000:SQS_3',
+  })
+
+  await sns.subscribe({
+    ...config,
+    Attributes: {
+      FilterPolicy: JSON.stringify({ recipients: ['supplier'] }),
+      FilterPolicyScope: 'MessageAttributes',
+      RawMessageDelivery: 'true',
+    },
+    Endpoint: 'arn:aws:sqs:us-east-1:000000000000:SQS_4',
+  })
+
+  await sns.subscribe({
+    ...config,
+    Attributes: {
+      FilterPolicy: JSON.stringify({ recipients: ['invoices'] }),
+      FilterPolicyScope: 'MessageAttributes',
+      RawMessageDelivery: 'true',
+    },
+    Endpoint: 'arn:aws:sqs:us-east-1:000000000000:SQS_5',
+  })
+
+  await sns.subscribe({
+    ...config,
+    Attributes: {
+      FilterPolicy: JSON.stringify({ recipients: ['invoices'] }),
+      FilterPolicyScope: 'MessageAttributes',
+      RawMessageDelivery: 'true',
+    },
+    Endpoint: 'arn:aws:sqs:us-east-1:000000000000:SQS_6',
   })
 
   const message = {
@@ -32,7 +82,7 @@ async function startup() {
     MessageAttributes: {
       recipients: {
         DataType: 'String.Array',
-        StringValue: JSON.stringify(['docusign']),
+        StringValue: JSON.stringify(['supplier']),
       },
       entityType: { DataType: 'String', StringValue: 'supplier' },
       action: { DataType: 'String', StringValue: 'approved' },
